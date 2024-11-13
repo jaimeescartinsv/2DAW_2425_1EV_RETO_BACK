@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
 
 [ApiController]
 [Route("api/movies")]
@@ -29,6 +28,7 @@ public class MoviesController : ControllerBase
         new Movie { Id = 20, Title = "The Green Mile", Description = "Un guardia de prisión descubre que un preso en el corredor de la muerte tiene un don especial, lo que le hace cuestionar la justicia de su ejecución.", Duration = 189, ImageUrl = "https://image.tmdb.org/t/p/original/aBQiJRxGRrX0mXFMjxyzWYFtEnf.jpg" }
     };
 
+    // Obtener todas las películas
     [HttpGet]
     public ActionResult<List<Movie>> GetMovies()
     {
