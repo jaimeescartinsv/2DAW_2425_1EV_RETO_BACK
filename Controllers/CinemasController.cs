@@ -19,6 +19,7 @@ public class CinesController : ControllerBase
                     SalaId = 1,
                     Nombre = "Sala 1",
                     CineId = 1,
+                    Capacidad = 200,
                     Funciones = new List<Funcion>
                     {
                         new Funcion 
@@ -45,6 +46,7 @@ public class CinesController : ControllerBase
                     SalaId = 2,
                     Nombre = "Sala 2",
                     CineId = 1,
+                    Capacidad = 200,
                     Funciones = new List<Funcion>
                     {
                         new Funcion 
