@@ -11,15 +11,35 @@ public class TicketsController : ControllerBase
     [HttpPost]
     public ActionResult<Ticket> PurchaseTicket([FromBody] Ticket ticket)
     {
-        ticket.FechaDeCompra = DateTime.Now;  // Fecha de compra del ticket
+        // Validar existencia de la función
+        var funcion = DataStore.Cines
+            .SelectMany(c => c.Salas)
+            .SelectMany(s => s.Funciones)
+            .FirstOrDefault(f => f.FuncionId == ticket.Funcion.FuncionId);
 
-        // Asignar un ID único al ticket (puedes ajustarlo según cómo quieras generar los ID)
+        if (funcion == null)
+        {
+            return BadRequest($"La función con ID {ticket.Funcion.FuncionId} no existe.");
+        }
+
+        // Validar capacidad de la sala
+        var sala = DataStore.Cines
+            .SelectMany(c => c.Salas)
+            .FirstOrDefault(s => s.SalaId == funcion.SalaId);
+
+        if (sala == null || sala.Capacidad <= Tickets.Count(t => t.Funcion.FuncionId == funcion.FuncionId))
+        {
+            return BadRequest("No hay asientos disponibles para esta función.");
+        }
+
+        // Crear el ticket
+        ticket.FechaDeCompra = DateTime.Now;  // Fecha de compra del ticket
         ticket.Id = Tickets.Count > 0 ? Tickets.Max(t => t.Id) + 1 : 1;
 
         // Añadir el ticket a la lista en memoria
         Tickets.Add(ticket);
 
-        return CreatedAtAction(nameof(PurchaseTicket), new { id = ticket.Id }, ticket);  // Retornar el ticket creado
+        return CreatedAtAction(nameof(GetTicketById), new { id = ticket.Id }, ticket);
     }
 
     // Obtener todos los tickets (opcional)
