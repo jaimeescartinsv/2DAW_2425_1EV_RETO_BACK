@@ -1,4 +1,4 @@
-public static class DataStore
+public static class DataStoreCines
 {
     public static List<Cine> Cines { get; set; } = new List<Cine>
     {

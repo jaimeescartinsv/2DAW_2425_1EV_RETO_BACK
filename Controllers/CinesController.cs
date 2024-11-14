@@ -8,14 +8,14 @@ public class CinesController : ControllerBase
     [HttpGet]
     public ActionResult<IEnumerable<Cine>> GetCines()
     {
-        return Ok(DataStore.Cines);
+        return Ok(DataStoreCines.Cines);
     }
 
     // Obtener un cine por ID con sus salas y funciones
     [HttpGet("{id}")]
     public ActionResult<Cine> GetCineById(int id)
     {
-        var cine = DataStore.Cines.FirstOrDefault(c => c.CineId == id);
+        var cine = DataStoreCines.Cines.FirstOrDefault(c => c.CineId == id);
         if (cine == null)
         {
             return NotFound($"Cine con ID {id} no encontrado.");
@@ -27,7 +27,7 @@ public class CinesController : ControllerBase
     [HttpGet("{id}/salas")]
     public ActionResult<IEnumerable<Sala>> GetSalasPorCineId(int id)
     {
-        var cine = DataStore.Cines.FirstOrDefault(c => c.CineId == id);
+        var cine = DataStoreCines.Cines.FirstOrDefault(c => c.CineId == id);
         if (cine == null)
         {
             return NotFound($"Cine con ID {id} no encontrado.");
@@ -40,7 +40,7 @@ public class CinesController : ControllerBase
     [HttpGet("{cineId}/salas/{salaId}/funciones")]
     public ActionResult<IEnumerable<Funcion>> GetFuncionesPorSalaId(int cineId, int salaId)
     {
-        var cine = DataStore.Cines.FirstOrDefault(c => c.CineId == cineId);
+        var cine = DataStoreCines.Cines.FirstOrDefault(c => c.CineId == cineId);
         if (cine == null)
         {
             return NotFound($"Cine con ID {cineId} no encontrado.");
@@ -59,7 +59,7 @@ public class CinesController : ControllerBase
     [HttpGet("{cineId}/salas/{salaId}/funciones/{peliculaId}/{fecha}")]
     public ActionResult<IEnumerable<Funcion>> GetScreeningsByCineAndSalaAndPelicula(int cineId, int salaId, int peliculaId, DateTime fecha)
     {
-        var cine = DataStore.Cines.FirstOrDefault(c => c.CineId == cineId);
+        var cine = DataStoreCines.Cines.FirstOrDefault(c => c.CineId == cineId);
         if (cine == null)
         {
             return NotFound($"Cine con ID {cineId} no encontrado.");

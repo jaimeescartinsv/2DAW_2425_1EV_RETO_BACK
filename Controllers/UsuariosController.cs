@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 public class UsuariosController : ControllerBase
 {
     // Lista estática de usuarios (en memoria)
-    private static List<Usuario> Usuarios = new List<Usuario>
+    public static List<Usuario> Usuarios = new List<Usuario>
     {
         new Usuario { UsuarioId = "1", Nombre = "Juan Perez", Correo = "juan.perez@example.com" },
         new Usuario { UsuarioId = "2", Nombre = "Maria Lopez", Correo = "maria.lopez@example.com" }
@@ -55,23 +55,6 @@ public class UsuariosController : ControllerBase
         }
 
         return Ok(usuario.Tickets);
-    }
-
-    // Añadir un ticket a un usuario
-    [HttpPost("{id}/tickets")]
-    public ActionResult<Ticket> AddTicketToUsuario(string id, [FromBody] Ticket ticket)
-    {
-        var usuario = Usuarios.FirstOrDefault(u => u.UsuarioId == id);
-        if (usuario == null)
-        {
-            return NotFound($"Usuario con ID {id} no encontrado.");
-        }
-
-        ticket.Id = usuario.Tickets.Count > 0 ? usuario.Tickets.Max(t => t.Id) + 1 : 1;
-        ticket.FechaDeCompra = DateTime.Now;
-        usuario.Tickets.Add(ticket);
-
-        return CreatedAtAction(nameof(GetTicketsByUsuarioId), new { id = usuario.UsuarioId }, ticket);
     }
 
     // Eliminar un usuario por ID
