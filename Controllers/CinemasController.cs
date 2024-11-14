@@ -57,16 +57,16 @@ public class CinemasController : ControllerBase
                     {
                         new Screening 
                         { 
-                            Id = 3, 
-                            SalaId = 2, 
+                            Id = 1, 
+                            SalaId = 1, 
                             PeliculaId = 3, 
                             FechaDeFuncion = new DateTime(2024, 12, 2),
                             HoraDeInicio = new DateTime(2024, 12, 2, 18, 30, 0) 
                         },
                         new Screening 
                         { 
-                            Id = 4, 
-                            SalaId = 2, 
+                            Id = 2, 
+                            SalaId = 1, 
                             PeliculaId = 4, 
                             FechaDeFuncion = new DateTime(2024, 12, 2),
                             HoraDeInicio = new DateTime(2024, 12, 2, 21, 0, 0) 
@@ -126,21 +126,6 @@ public class CinemasController : ControllerBase
         }
 
         return Ok(sala.Funciones);
-    }
-
-    // Obtener una función específica por ID en cualquier sala de cualquier cine
-    [HttpGet("funcion/{id}")]
-    public ActionResult<Screening> GetFuncionById(int id)
-    {
-        var screening = Cinemas
-            .SelectMany(c => c.Salas)
-            .SelectMany(s => s.Funciones)
-            .FirstOrDefault(f => f.Id == id);
-        if (screening == null)
-        {
-            return NotFound($"Función con ID {id} no encontrada.");
-        }
-        return Ok(screening);
     }
 
     // Obtener funciones de cine para una película en una fecha específica en una sala específica
