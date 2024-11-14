@@ -122,7 +122,7 @@ public class CinesController : ControllerBase
 
     // Obtener funciones de cine para una película en una fecha específica en una sala específica
     [HttpGet("{cineId}/salas/{salaId}/funciones/{peliculaId}/{fecha}")]
-    public ActionResult<IEnumerable<Funcion>> GetScreeningsByCineAndSalaAndMovie(int cineId, int salaId, int peliculaId, DateTime fecha)
+    public ActionResult<IEnumerable<Funcion>> GetScreeningsByCineAndSalaAndPelicula(int cineId, int salaId, int peliculaId, DateTime fecha)
     {
         var cine = Cines.FirstOrDefault(c => c.CineId == cineId);
         if (cine == null)
