@@ -6,6 +6,7 @@ builder.Services.AddControllers();
 builder.Services.AddTransient<FuncionesController>();
 builder.Services.AddScoped<FuncionesController>();
 builder.Services.AddScoped<TicketsController>();
+builder.Services.AddScoped<SalasController>();
 
 // Agregar Swagger para la documentación
 builder.Services.AddEndpointsApiExplorer();
