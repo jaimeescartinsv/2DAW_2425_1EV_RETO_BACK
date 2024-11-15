@@ -9,7 +9,7 @@ public class TicketsController : ControllerBase
 
     // Crear un ticket para una función seleccionada
     [HttpPost("crear")]
-    public ActionResult<Ticket> CreateTicket([FromBody] Ticket ticket)
+    public ActionResult<Ticket> CreateTicket([FromBody] Ticket ticket, [FromServices] FuncionesController funcionesController)
     {
         // Validar existencia del usuario
         var usuario = UsuariosController.Usuarios.FirstOrDefault(u => u.UsuarioId == ticket.UsuarioId);
@@ -19,28 +19,30 @@ public class TicketsController : ControllerBase
         }
 
         // Validar existencia de la función
-        var funcion = DataStoreCines.Cines
-            .SelectMany(c => c.Salas)
-            .SelectMany(s => s.Funciones)
-            .FirstOrDefault(f => f.FuncionId == ticket.Funcion.FuncionId);
-
+        var funcion = funcionesController.GetFuncionById(ticket.Funcion.FuncionId).Value;
         if (funcion == null)
         {
             return BadRequest($"La función con ID {ticket.Funcion.FuncionId} no existe.");
         }
 
-        // Validar capacidad de la sala
+        // Buscar la sala asociada a la función
         var sala = DataStoreCines.Cines
             .SelectMany(c => c.Salas)
             .FirstOrDefault(s => s.SalaId == funcion.SalaId);
 
-        if (sala == null || sala.Capacidad <= Tickets.Count(t => t.Funcion.FuncionId == funcion.FuncionId))
+        if (sala == null)
+        {
+            return BadRequest($"La sala asociada a la función con ID {ticket.Funcion.FuncionId} no existe.");
+        }
+
+        // Validar capacidad de la sala
+        if (Tickets.Count(t => t.Funcion.FuncionId == funcion.FuncionId) >= sala.Capacidad)
         {
             return BadRequest("No hay asientos disponibles para esta función.");
         }
 
         // Crear el ticket
-        ticket.FechaDeCompra = DateTime.Now;  // Fecha de compra del ticket
+        ticket.FechaDeCompra = DateTime.Now; // Fecha de compra del ticket
         ticket.Id = Tickets.Count > 0 ? Tickets.Max(t => t.Id) + 1 : 1;
 
         // Añadir el ticket a la lista en memoria
