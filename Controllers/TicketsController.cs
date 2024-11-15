@@ -47,7 +47,7 @@ public class TicketsController : ControllerBase
     }
 
     // Obtener un ticket específico por su ID
-    [HttpGet("{Id}")]
+    [HttpGet("{id}")]
     public ActionResult<Ticket> GetTicketById(int id)
     {
         var ticket = Tickets.FirstOrDefault(t => t.Id == id);
@@ -85,7 +85,6 @@ public class TicketsController : ControllerBase
 
         Tickets.Remove(ticket);
 
-        // También eliminarlo del usuario asociado
         var usuario = UsuariosController.Usuarios.FirstOrDefault(u => u.UsuarioId == ticket.UsuarioId);
         if (usuario != null)
         {
