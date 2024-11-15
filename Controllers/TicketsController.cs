@@ -47,7 +47,7 @@ public class TicketsController : ControllerBase
     }
 
     // Obtener un ticket específico por su ID
-    [HttpGet("{ticketId}")]
+    [HttpGet("{Id}")]
     public ActionResult<Ticket> GetTicketById(int id)
     {
         var ticket = Tickets.FirstOrDefault(t => t.Id == id);
