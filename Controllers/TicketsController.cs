@@ -28,7 +28,7 @@ public class TicketsController : ControllerBase
 
         // Crear el ticket
         ticket.FechaDeCompra = DateTime.Now;
-        ticket.Id = Tickets.Count > 0 ? Tickets.Max(t => t.Id) + 1 : 1;
+        ticket.TicketId = Tickets.Count > 0 ? Tickets.Max(t => t.TicketId) + 1 : 1;
 
         // Añadir el ticket a la lista en memoria
         Tickets.Add(ticket);
@@ -36,7 +36,7 @@ public class TicketsController : ControllerBase
         // Asociar el ticket al usuario
         usuario.Tickets.Add(ticket);
 
-        return CreatedAtAction(nameof(GetTicketById), new { id = ticket.Id }, ticket);
+        return CreatedAtAction(nameof(GetTicketById), new { ticketId = ticket.TicketId }, ticket);
     }
 
     // Obtener todos los tickets
@@ -47,14 +47,14 @@ public class TicketsController : ControllerBase
     }
 
     // Obtener un ticket específico por su ID
-    [HttpGet("{id}")]
-    public ActionResult<Ticket> GetTicketById(int id)
+    [HttpGet("{ticketId}")]
+    public ActionResult<Ticket> GetTicketById(int ticketId)
     {
-        var ticket = Tickets.FirstOrDefault(t => t.Id == id);
+        var ticket = Tickets.FirstOrDefault(t => t.TicketId == ticketId);
 
         if (ticket == null)
         {
-            return NotFound($"Ticket con ID {id} no encontrado.");
+            return NotFound($"Ticket con ID {ticketId} no encontrado.");
         }
 
         return Ok(ticket);
@@ -74,13 +74,13 @@ public class TicketsController : ControllerBase
     }
 
     // Eliminar un ticket por su ID
-    [HttpDelete("{id}")]
-    public IActionResult DeleteTicket(int id)
+    [HttpDelete("{ticketId}")]
+    public IActionResult DeleteTicket(int ticketId)
     {
-        var ticket = Tickets.FirstOrDefault(t => t.Id == id);
+        var ticket = Tickets.FirstOrDefault(t => t.TicketId == ticketId);
         if (ticket == null)
         {
-            return NotFound($"Ticket con ID {id} no encontrado.");
+            return NotFound($"Ticket con ID {ticketId} no encontrado.");
         }
 
         Tickets.Remove(ticket);
