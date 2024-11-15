@@ -19,12 +19,12 @@ public class UsuariosController : ControllerBase
 
     // Obtener un usuario por ID
     [HttpGet("{usuarioId}")]
-    public ActionResult<Usuario> GetUsuarioById(int id)
+    public ActionResult<Usuario> GetUsuarioById(int usuarioId)
     {
-        var usuario = Usuarios.FirstOrDefault(u => u.UsuarioId == id);
+        var usuario = Usuarios.FirstOrDefault(u => u.UsuarioId == usuarioId);
         if (usuario == null)
         {
-            return NotFound($"Usuario con ID {id} no encontrado.");
+            return NotFound($"Usuario con ID {usuarioId} no encontrado.");
         }
 
         return Ok(usuario);
@@ -45,12 +45,12 @@ public class UsuariosController : ControllerBase
 
     // Obtener los tickets de un usuario por ID
     [HttpGet("{usuarioId}/tickets")]
-    public ActionResult<IEnumerable<Ticket>> GetTicketsByUsuarioId(int id)
+    public ActionResult<IEnumerable<Ticket>> GetTicketsByUsuarioId(int usuarioId)
     {
-        var usuario = Usuarios.FirstOrDefault(u => u.UsuarioId == id);
+        var usuario = Usuarios.FirstOrDefault(u => u.UsuarioId == usuarioId);
         if (usuario == null)
         {
-            return NotFound($"Usuario con ID {id} no encontrado.");
+            return NotFound($"Usuario con ID {usuarioId} no encontrado.");
         }
 
         return Ok(usuario.Tickets);
