@@ -18,7 +18,7 @@ public class UsuariosController : ControllerBase
     }
 
     // Obtener un usuario por ID
-    [HttpGet("{id}")]
+    [HttpGet("{usuarioId}")]
     public ActionResult<Usuario> GetUsuarioById(int id)
     {
         var usuario = Usuarios.FirstOrDefault(u => u.UsuarioId == id);
@@ -44,7 +44,7 @@ public class UsuariosController : ControllerBase
     }
 
     // Obtener los tickets de un usuario por ID
-    [HttpGet("{id}/tickets")]
+    [HttpGet("{usuarioId}/tickets")]
     public ActionResult<IEnumerable<Ticket>> GetTicketsByUsuarioId(int id)
     {
         var usuario = Usuarios.FirstOrDefault(u => u.UsuarioId == id);
@@ -57,7 +57,7 @@ public class UsuariosController : ControllerBase
     }
 
     // Eliminar un usuario por ID
-    [HttpDelete("{id}")]
+    [HttpDelete("{usuarioId}")]
     public IActionResult DeleteUsuario(int id)
     {
         var usuario = Usuarios.FirstOrDefault(u => u.UsuarioId == id);

@@ -12,7 +12,7 @@ public class CinesController : ControllerBase
     }
 
     // Obtener un cine por ID con sus salas y funciones
-    [HttpGet("{id}")]
+    [HttpGet("{cineId}")]
     public ActionResult<Cine> GetCineById(int id)
     {
         var cine = DataStoreCines.Cines.FirstOrDefault(c => c.CineId == id);
@@ -24,7 +24,7 @@ public class CinesController : ControllerBase
     }
 
     // Obtener las salas de un cine por ID
-    [HttpGet("{id}/salas")]
+    [HttpGet("{cineId}/salas")]
     public ActionResult<IEnumerable<Sala>> GetSalasPorCineId(int id)
     {
         var cine = DataStoreCines.Cines.FirstOrDefault(c => c.CineId == id);

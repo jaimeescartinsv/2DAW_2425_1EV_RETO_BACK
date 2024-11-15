@@ -17,7 +17,7 @@ public class FuncionesController : ControllerBase
     }
 
     // Obtener una función específica por su ID
-    [HttpGet("{id}")]
+    [HttpGet("{funcionId}")]
     public ActionResult<Funcion> GetFuncionById(int id)
     {
         var funcion = DataStoreCines.Cines
