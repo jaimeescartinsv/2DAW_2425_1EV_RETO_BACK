@@ -1,10 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route("api/usuarios")]
 public class UsuariosController : ControllerBase
 {
-    // Lista estática de usuarios (en memoria)
     public static List<Usuario> Usuarios = new List<Usuario>
     {
         new Usuario { UsuarioId = "1", Nombre = "Juan Perez", Correo = "juan.perez@example.com" },

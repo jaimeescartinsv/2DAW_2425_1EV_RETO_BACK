@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route("api/funciones")]
 public class FuncionesController : ControllerBase
 {
     // Obtener todas las funciones

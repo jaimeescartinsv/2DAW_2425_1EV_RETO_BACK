@@ -1,10 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route("api/tickets")]
 public class TicketsController : ControllerBase
 {
-    // Lista estática de tickets (en memoria)
     private static List<Ticket> Tickets = new List<Ticket>();
 
     // Crear un ticket para una función seleccionada

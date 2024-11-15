@@ -4,12 +4,11 @@ using Microsoft.AspNetCore.Mvc;
 [Route("api/salas")]
 public class SalasController : ControllerBase
 {
-    // Lista estática de asientos (en memoria)
     private static List<Asiento> Asientos = new List<Asiento>
     {
         new Asiento { AsientoId = 1, SalaId = 1, Estado = "Disponible" },
         new Asiento { AsientoId = 2, SalaId = 1, Estado = "Disponible" },
-        new Asiento { AsientoId = 3, SalaId = 1, Estado = "Reservado" },
+        new Asiento { AsientoId = 3, SalaId = 1, Estado = "Disponible" },
         new Asiento { AsientoId = 4, SalaId = 2, Estado = "Disponible" }
     };
 
@@ -27,7 +26,7 @@ public class SalasController : ControllerBase
     }
 
     // Cambiar el estado de un asiento
-    [HttpPut("asientos/{asientoId}")]
+    [HttpPut("{salaId}/asientos/{asientoId}")]
     public ActionResult<Asiento> UpdateAsientoEstado(int asientoId, [FromBody] string nuevoEstado)
     {
         var asiento = Asientos.FirstOrDefault(a => a.AsientoId == asientoId);

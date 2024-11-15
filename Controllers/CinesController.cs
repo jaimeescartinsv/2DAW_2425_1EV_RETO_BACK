@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route("api/cines")]
 public class CinesController : ControllerBase
 {
     // Obtener lista de cines con sus salas y funciones
@@ -55,9 +55,9 @@ public class CinesController : ControllerBase
         return Ok(sala.Funciones);
     }
 
-    // Obtener funciones de cine para una película en una fecha específica en una sala específica
-    [HttpGet("{cineId}/salas/{salaId}/funciones/{peliculaId}/{fecha}")]
-    public ActionResult<IEnumerable<Funcion>> GetScreeningsByCineAndSalaAndPelicula(int cineId, int salaId, int peliculaId, DateTime fecha)
+    // Obtener una función específica por cine, sala y función
+    [HttpGet("{cineId}/salas/{salaId}/funciones/{funcionId}")]
+    public ActionResult<Funcion> GetFuncionById(int cineId, int salaId, int funcionId)
     {
         var cine = DataStoreCines.Cines.FirstOrDefault(c => c.CineId == cineId);
         if (cine == null)
@@ -71,15 +71,13 @@ public class CinesController : ControllerBase
             return NotFound($"Sala con ID {salaId} no encontrada en el cine con ID {cineId}.");
         }
 
-        var screenings = sala.Funciones
-            .Where(s => s.PeliculaId == peliculaId && s.FechaDeFuncion.Date == fecha.Date)
-            .ToList();
+        var funcion = sala.Funciones.FirstOrDefault(f => f.FuncionId == funcionId);
 
-        if (!screenings.Any())
+        if (funcion == null)
         {
-            return NotFound($"No se encontraron funciones para la película con ID {peliculaId} en la sala con ID {salaId} del cine con ID {cineId} en la fecha {fecha.ToShortDateString()}.");
+            return NotFound($"Función con ID {funcionId} no encontrada en la sala con ID {salaId} del cine con ID {cineId}.");
         }
 
-        return Ok(screenings);
+        return Ok(funcion);
     }
 }

@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route("api/peliculas")]
 public class PeliculasController : ControllerBase
 {
     private static List<Pelicula> Peliculas = new List<Pelicula>

@@ -4,5 +4,4 @@ public class Ticket
     public Funcion Funcion { get; set; }  // Objeto Función relacionado
     public string UsuarioId { get; set; }  // ID del usuario que compra el ticket
     public DateTime FechaDeCompra { get; set; }  // Fecha de compra del ticket
-    public int ScreeningId { get; internal set; }
 }
