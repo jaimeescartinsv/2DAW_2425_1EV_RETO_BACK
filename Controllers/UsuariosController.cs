@@ -6,8 +6,8 @@ public class UsuariosController : ControllerBase
 {
     public static List<Usuario> Usuarios = new List<Usuario>
     {
-        new Usuario { UsuarioId = 1, Nombre = "Juan Perez", Correo = "juan.perez@example.com" },
-        new Usuario { UsuarioId = 2, Nombre = "Maria Lopez", Correo = "maria.lopez@example.com" }
+        new Usuario { UsuarioId = 1, Nombre = "Jaime Escartín", Correo = "jaime.escartin@example.com" },
+        new Usuario { UsuarioId = 2, Nombre = "Gabriel Galán", Correo = "gabriel.galan@example.com" }
     };
 
     // Obtener todos los usuarios

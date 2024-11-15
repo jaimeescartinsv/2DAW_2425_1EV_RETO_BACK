@@ -18,16 +18,16 @@ public class FuncionesController : ControllerBase
 
     // Obtener una función específica por su ID
     [HttpGet("{funcionId}")]
-    public ActionResult<Funcion> GetFuncionById(int id)
+    public ActionResult<Funcion> GetFuncionById(int funcionId)
     {
         var funcion = DataStoreCines.Cines
             .SelectMany(c => c.Salas)
             .SelectMany(s => s.Funciones)
-            .FirstOrDefault(f => f.FuncionId == id);
+            .FirstOrDefault(f => f.FuncionId == funcionId);
 
         if (funcion == null)
         {
-            return NotFound($"Función con ID {id} no encontrada.");
+            return NotFound($"Función con ID {funcionId} no encontrada.");
         }
 
         return Ok(funcion);
