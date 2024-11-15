@@ -3,6 +3,9 @@ var builder = WebApplication.CreateBuilder(args);
 // Agregar servicios de autorización y controladores al contenedor de servicios
 builder.Services.AddAuthorization();
 builder.Services.AddControllers();
+builder.Services.AddTransient<FuncionesController>();
+builder.Services.AddScoped<FuncionesController>();
+builder.Services.AddScoped<TicketsController>();
 
 // Agregar Swagger para la documentación
 builder.Services.AddEndpointsApiExplorer();

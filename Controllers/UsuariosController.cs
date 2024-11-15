@@ -6,8 +6,8 @@ public class UsuariosController : ControllerBase
 {
     public static List<Usuario> Usuarios = new List<Usuario>
     {
-        new Usuario { UsuarioId = "1", Nombre = "Juan Perez", Correo = "juan.perez@example.com" },
-        new Usuario { UsuarioId = "2", Nombre = "Maria Lopez", Correo = "maria.lopez@example.com" }
+        new Usuario { UsuarioId = 1, Nombre = "Juan Perez", Correo = "juan.perez@example.com" },
+        new Usuario { UsuarioId = 2, Nombre = "Maria Lopez", Correo = "maria.lopez@example.com" }
     };
 
     // Obtener todos los usuarios
@@ -19,7 +19,7 @@ public class UsuariosController : ControllerBase
 
     // Obtener un usuario por ID
     [HttpGet("{id}")]
-    public ActionResult<Usuario> GetUsuarioById(string id)
+    public ActionResult<Usuario> GetUsuarioById(int id)
     {
         var usuario = Usuarios.FirstOrDefault(u => u.UsuarioId == id);
         if (usuario == null)
@@ -45,7 +45,7 @@ public class UsuariosController : ControllerBase
 
     // Obtener los tickets de un usuario por ID
     [HttpGet("{id}/tickets")]
-    public ActionResult<IEnumerable<Ticket>> GetTicketsByUsuarioId(string id)
+    public ActionResult<IEnumerable<Ticket>> GetTicketsByUsuarioId(int id)
     {
         var usuario = Usuarios.FirstOrDefault(u => u.UsuarioId == id);
         if (usuario == null)
@@ -58,7 +58,7 @@ public class UsuariosController : ControllerBase
 
     // Eliminar un usuario por ID
     [HttpDelete("{id}")]
-    public IActionResult DeleteUsuario(string id)
+    public IActionResult DeleteUsuario(int id)
     {
         var usuario = Usuarios.FirstOrDefault(u => u.UsuarioId == id);
         if (usuario == null)

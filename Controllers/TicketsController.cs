@@ -18,30 +18,16 @@ public class TicketsController : ControllerBase
         }
 
         // Validar existencia de la función
-        var funcion = funcionesController.GetFuncionById(ticket.Funcion.FuncionId).Value;
-        if (funcion == null)
+        var result = funcionesController.GetFuncionById(ticket.FuncionId);
+        if (result.Result is NotFoundObjectResult)
         {
-            return BadRequest($"La función con ID {ticket.Funcion.FuncionId} no existe.");
+            return BadRequest($"La función con ID {ticket.FuncionId} no existe.");
         }
 
-        // Buscar la sala asociada a la función
-        var sala = DataStoreCines.Cines
-            .SelectMany(c => c.Salas)
-            .FirstOrDefault(s => s.SalaId == funcion.SalaId);
-
-        if (sala == null)
-        {
-            return BadRequest($"La sala asociada a la función con ID {ticket.Funcion.FuncionId} no existe.");
-        }
-
-        // Validar capacidad de la sala
-        if (Tickets.Count(t => t.Funcion.FuncionId == funcion.FuncionId) >= sala.Capacidad)
-        {
-            return BadRequest("No hay asientos disponibles para esta función.");
-        }
+        var funcion = result.Value;
 
         // Crear el ticket
-        ticket.FechaDeCompra = DateTime.Now; // Fecha de compra del ticket
+        ticket.FechaDeCompra = DateTime.Now;
         ticket.Id = Tickets.Count > 0 ? Tickets.Max(t => t.Id) + 1 : 1;
 
         // Añadir el ticket a la lista en memoria
@@ -76,7 +62,7 @@ public class TicketsController : ControllerBase
 
     // Obtener los tickets de un usuario específico
     [HttpGet("usuario/{usuarioId}")]
-    public ActionResult<IEnumerable<Ticket>> GetTicketsByUsuarioId(string usuarioId)
+    public ActionResult<IEnumerable<Ticket>> GetTicketsByUsuarioId(int usuarioId)
     {
         var usuario = UsuariosController.Usuarios.FirstOrDefault(u => u.UsuarioId == usuarioId);
         if (usuario == null)
