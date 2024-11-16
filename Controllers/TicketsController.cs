@@ -8,7 +8,7 @@ public class TicketsController : ControllerBase
 
     // Crear un ticket para una función seleccionada
     [HttpPost("crear")]
-    public ActionResult<Ticket> CreateTicket([FromBody] Ticket ticket, [FromServices] FuncionesController funcionesController)
+    public ActionResult<Ticket> CreateTicket([FromBody] Ticket ticket)
     {
         // Validar existencia del usuario
         var usuario = UsuariosController.Usuarios.FirstOrDefault(u => u.UsuarioId == ticket.UsuarioId);
@@ -17,18 +17,53 @@ public class TicketsController : ControllerBase
             return BadRequest($"El usuario con ID {ticket.UsuarioId} no existe.");
         }
 
-        // Validar existencia de la función
-        var result = funcionesController.GetFuncionById(ticket.FuncionId);
-        if (result.Result is NotFoundObjectResult)
+        // Validar existencia de la función directamente
+        var funcion = DataStoreCines.Cines
+            .SelectMany(c => c.Salas)
+            .SelectMany(s => s.Funciones)
+            .FirstOrDefault(f => f.FuncionId == ticket.FuncionId);
+
+        if (funcion == null)
         {
             return BadRequest($"La función con ID {ticket.FuncionId} no existe.");
         }
 
-        var funcion = result.Value;
+        // Validar existencia de la sala asociada a la función
+        var sala = DataStoreCines.Cines?
+            .SelectMany(c => c.Salas)
+            .FirstOrDefault(s => s.SalaId == funcion.SalaId);
+
+        if (sala == null)
+        {
+            return BadRequest($"No se encontró la sala asociada a la función con ID {ticket.FuncionId}.");
+        }
+
+        // Validar que la lista de asientos no sea nula
+        if (sala.Asientos == null || !sala.Asientos.Any())
+        {
+            return BadRequest($"La sala con ID {sala.SalaId} no tiene asientos configurados.");
+        }
+
+        // Validar existencia del asiento
+        var asiento = sala.Asientos.FirstOrDefault(a => a.AsientoId == ticket.AsientoId);
+        if (asiento == null)
+        {
+            return BadRequest($"El asiento con ID {ticket.AsientoId} no existe en la sala con ID {sala.SalaId}.");
+        }
+
+        // Validar que el asiento esté disponible
+        if (asiento.Estado != "Disponible")
+        {
+            return BadRequest($"El asiento con ID {ticket.AsientoId} no está disponible.");
+        }
 
         // Crear el ticket
         ticket.FechaDeCompra = DateTime.Now;
         ticket.TicketId = Tickets.Count > 0 ? Tickets.Max(t => t.TicketId) + 1 : 1;
+
+        // Actualizar el estado del asiento
+        asiento.Estado = "Reservado";
+        asiento.TicketId = ticket.TicketId;
 
         // Añadir el ticket a la lista en memoria
         Tickets.Add(ticket);
