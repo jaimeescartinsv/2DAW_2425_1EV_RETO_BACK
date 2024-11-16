@@ -13,24 +13,24 @@ public class CinesController : ControllerBase
 
     // Obtener un cine por ID con sus salas y funciones
     [HttpGet("{cineId}")]
-    public ActionResult<Cine> GetCineById(int id)
+    public ActionResult<Cine> GetCineById(int cineId)
     {
-        var cine = DataStoreCines.Cines.FirstOrDefault(c => c.CineId == id);
+        var cine = DataStoreCines.Cines.FirstOrDefault(c => c.CineId == cineId);
         if (cine == null)
         {
-            return NotFound($"Cine con ID {id} no encontrado.");
+            return NotFound($"Cine con ID {cineId} no encontrado.");
         }
         return Ok(cine);
     }
 
     // Obtener las salas de un cine por ID
     [HttpGet("{cineId}/salas")]
-    public ActionResult<IEnumerable<Sala>> GetSalasPorCineId(int id)
+    public ActionResult<IEnumerable<Sala>> GetSalasPorCineId(int cineId)
     {
-        var cine = DataStoreCines.Cines.FirstOrDefault(c => c.CineId == id);
+        var cine = DataStoreCines.Cines.FirstOrDefault(c => c.CineId == cineId);
         if (cine == null)
         {
-            return NotFound($"Cine con ID {id} no encontrado.");
+            return NotFound($"Cine con ID {cineId} no encontrado.");
         }
 
         return Ok(cine.Salas);

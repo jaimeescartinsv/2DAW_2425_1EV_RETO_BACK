@@ -33,7 +33,13 @@ public static class DataStoreCines
                             FechaDeFuncion = new DateTime(2024, 12, 1),
                             HoraDeInicio = new DateTime(2024, 12, 1, 20, 30, 0)
                         }
-                    }
+                    },
+                    Asientos = Enumerable.Range(1, 200).Select(id => new Asiento
+                    {
+                        AsientoId = id,
+                        SalaId = 1,
+                        Estado = "Disponible"
+                    }).ToList()
                 },
                 new Sala
                 {
@@ -59,7 +65,13 @@ public static class DataStoreCines
                             FechaDeFuncion = new DateTime(2024, 12, 2),
                             HoraDeInicio = new DateTime(2024, 12, 2, 21, 0, 0)
                         }
-                    }
+                    },
+                    Asientos = Enumerable.Range(1, 200).Select(id => new Asiento
+                    {
+                        AsientoId = id,
+                        SalaId = 2,
+                        Estado = "Disponible"
+                    }).ToList()
                 }
             }
         }

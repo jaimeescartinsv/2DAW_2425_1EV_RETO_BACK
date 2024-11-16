@@ -4,35 +4,40 @@ using Microsoft.AspNetCore.Mvc;
 [Route("api/salas")]
 public class SalasController : ControllerBase
 {
-    private static List<Asiento> Asientos = new List<Asiento>
-    {
-        new Asiento { AsientoId = 1, SalaId = 1, Estado = "Disponible" },
-        new Asiento { AsientoId = 2, SalaId = 1, Estado = "Disponible" },
-        new Asiento { AsientoId = 3, SalaId = 1, Estado = "Disponible" },
-        new Asiento { AsientoId = 4, SalaId = 2, Estado = "Disponible" }
-    };
-
     // Obtener todos los asientos por sala
     [HttpGet("{salaId}/asientos")]
     public ActionResult<IEnumerable<Asiento>> GetAsientosBySalaId(int salaId)
     {
-        var asientos = Asientos.Where(a => a.SalaId == salaId).ToList();
-        if (!asientos.Any())
+        var sala = DataStoreCines.Cines
+            .SelectMany(c => c.Salas)
+            .FirstOrDefault(s => s.SalaId == salaId);
+
+        if (sala == null)
         {
-            return NotFound($"No se encontraron asientos para la sala con ID {salaId}.");
+            return NotFound($"Sala con ID {salaId} no encontrada.");
         }
 
-        return Ok(asientos);
+        return Ok(sala.Asientos);
     }
 
     // Cambiar el estado de un asiento
     [HttpPut("{salaId}/asientos/{asientoId}")]
-    public ActionResult<Asiento> UpdateAsientoEstado(int asientoId, [FromBody] string nuevoEstado)
+    public ActionResult<Asiento> UpdateAsientoEstado(int salaId, int asientoId, [FromBody] string nuevoEstado)
     {
-        var asiento = Asientos.FirstOrDefault(a => a.AsientoId == asientoId);
+        var sala = DataStoreCines.Cines
+            .SelectMany(c => c.Salas)
+            .FirstOrDefault(s => s.SalaId == salaId);
+
+        if (sala == null)
+        {
+            return NotFound($"Sala con ID {salaId} no encontrada.");
+        }
+
+        var asiento = sala.Asientos.FirstOrDefault(a => a.AsientoId == asientoId);
+
         if (asiento == null)
         {
-            return NotFound($"Asiento con ID {asientoId} no encontrado.");
+            return NotFound($"Asiento con ID {asientoId} no encontrado en la sala con ID {salaId}.");
         }
 
         asiento.Estado = nuevoEstado;
