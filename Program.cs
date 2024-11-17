@@ -1,16 +1,25 @@
 var builder = WebApplication.CreateBuilder(args);
 
-// Agregar servicios de autorización y controladores al contenedor de servicios
-builder.Services.AddAuthorization();
-builder.Services.AddControllers();
-builder.Services.AddTransient<FuncionesController>();
-builder.Services.AddScoped<FuncionesController>();
+// Agregar servicios al contenedor
+builder.Services.AddControllers(); // Los controladores se registran automáticamente
 builder.Services.AddScoped<TicketsController>();
 builder.Services.AddScoped<SalasController>();
 
-// Agregar Swagger para la documentación
+// Configurar autorización
+builder.Services.AddAuthorization();
+
+// Habilitar Swagger para la documentación
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+// Configurar CORS
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll", policy =>
+        policy.AllowAnyOrigin()
+              .AllowAnyMethod()
+              .AllowAnyHeader());
+});
 
 var app = builder.Build();
 
@@ -21,9 +30,10 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+// Habilitar CORS
+app.UseCors("AllowAll");
 
-// Habilitar autorización en el pipeline
+app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();

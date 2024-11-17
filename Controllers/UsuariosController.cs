@@ -34,13 +34,22 @@ public class UsuariosController : ControllerBase
     [HttpPost]
     public ActionResult<Usuario> CrearUsuario([FromBody] Usuario nuevoUsuario)
     {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+
         if (Usuarios.Any(u => u.UsuarioId == nuevoUsuario.UsuarioId))
         {
             return BadRequest("El usuario con este ID ya existe.");
         }
 
+        // Forzar que Tickets sea una lista vacía si no se envía
+        nuevoUsuario.Tickets = nuevoUsuario.Tickets ?? new List<Ticket>();
+
         Usuarios.Add(nuevoUsuario);
-        return CreatedAtAction(nameof(GetUsuarioById), new { id = nuevoUsuario.UsuarioId }, nuevoUsuario);
+
+        return CreatedAtAction(nameof(GetUsuarioById), new { usuarioId = nuevoUsuario.UsuarioId }, nuevoUsuario);
     }
 
     // Obtener los tickets de un usuario por ID
