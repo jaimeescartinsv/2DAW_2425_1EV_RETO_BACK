@@ -6,8 +6,8 @@ public class UsuariosController : ControllerBase
 {
     public static List<Usuario> Usuarios = new List<Usuario>
     {
-        new Usuario { UsuarioId = 1, Nombre = "Jaime Escartín", Correo = "jaime.escartin@example.com" },
-        new Usuario { UsuarioId = 2, Nombre = "Gabriel Galán", Correo = "gabriel.galan@example.com" }
+        new Usuario { UsuarioId = 1, Nombre = "Jaime Escartín", Correo = "jaime.escartin@example.com", Contrasena = "1234" },
+        new Usuario { UsuarioId = 2, Nombre = "Gabriel Galán", Correo = "gabriel.galan@example.com", Contrasena = "1234" }
     };
 
     // Obtener todos los usuarios
@@ -58,12 +58,12 @@ public class UsuariosController : ControllerBase
 
     // Eliminar un usuario por ID
     [HttpDelete("{usuarioId}")]
-    public IActionResult DeleteUsuario(int id)
+    public IActionResult DeleteUsuario(int usuarioId)
     {
-        var usuario = Usuarios.FirstOrDefault(u => u.UsuarioId == id);
+        var usuario = Usuarios.FirstOrDefault(u => u.UsuarioId == usuarioId);
         if (usuario == null)
         {
-            return NotFound($"Usuario con ID {id} no encontrado.");
+            return NotFound($"Usuario con ID {usuarioId} no encontrado.");
         }
 
         Usuarios.Remove(usuario);
