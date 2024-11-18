@@ -39,14 +39,30 @@ public class UsuariosController : ControllerBase
             return BadRequest(ModelState);
         }
 
-        if (Usuarios.Any(u => u.UsuarioId == nuevoUsuario.UsuarioId))
+        var usuarioExistente = Usuarios.FirstOrDefault(u => u.Correo.Equals(nuevoUsuario.Correo, StringComparison.OrdinalIgnoreCase));
+        if (usuarioExistente != null)
         {
-            return BadRequest("El usuario con este ID ya existe.");
+            return BadRequest(new
+            {
+                type = "https://tools.ietf.org/html/rfc7231#section-6.5.1",
+                title = "Bad Request",
+                status = 400,
+                detail = $"El usuario con el correo '{nuevoUsuario.Correo}' ya existe."
+            });
         }
 
-        // Forzar que Tickets sea una lista vacía si no se envía
-        nuevoUsuario.Tickets = nuevoUsuario.Tickets ?? new List<Ticket>();
+        if (Usuarios.Any(u => u.UsuarioId == nuevoUsuario.UsuarioId))
+        {
+            return BadRequest(new
+            {
+                type = "https://tools.ietf.org/html/rfc7231#section-6.5.1",
+                title = "Bad Request",
+                status = 400,
+                detail = $"El usuario con el ID {nuevoUsuario.UsuarioId} ya existe."
+            });
+        }
 
+        nuevoUsuario.Tickets = nuevoUsuario.Tickets ?? new List<Ticket>();
         Usuarios.Add(nuevoUsuario);
 
         return CreatedAtAction(nameof(GetUsuarioById), new { usuarioId = nuevoUsuario.UsuarioId }, nuevoUsuario);
