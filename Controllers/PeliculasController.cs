@@ -47,4 +47,16 @@ public class PeliculasController : ControllerBase
         }
         return Ok(pelicula);
     }
+
+    // Buscar películas por género
+    [HttpGet("buscar")]
+    public ActionResult<List<Pelicula>> GetPeliculasByGenero([FromQuery] string genero)
+    {
+        var peliculasFiltradas = Peliculas.Where(p => p.Genero.Contains(genero, StringComparison.OrdinalIgnoreCase)).ToList();
+        if (!peliculasFiltradas.Any())
+        {
+            return NotFound($"No se encontraron películas con el género '{genero}'.");
+        }
+        return Ok(peliculasFiltradas);
+    }
 }
