@@ -48,8 +48,24 @@ public class PeliculasController : ControllerBase
         return Ok(pelicula);
     }
 
+    // Método para buscar películas por título
+    [HttpGet("buscar-por-titulo")]
+    public ActionResult<List<Pelicula>> GetPeliculasByTitle([FromQuery] string title)
+    {
+        var peliculasFiltradas = Peliculas
+            .Where(p => p.Title.Contains(title, StringComparison.OrdinalIgnoreCase))
+            .ToList();
+
+        if (!peliculasFiltradas.Any())
+        {
+            return NotFound($"No se encontraron películas con el título que contiene '{title}'.");
+        }
+
+        return Ok(peliculasFiltradas);
+    }
+
     // Buscar películas por género
-    [HttpGet("buscar")]
+    [HttpGet("buscar-por-género")]
     public ActionResult<List<Pelicula>> GetPeliculasByGenero([FromQuery] string genero)
     {
         var peliculasFiltradas = Peliculas.Where(p => p.Genero.Contains(genero, StringComparison.OrdinalIgnoreCase)).ToList();
