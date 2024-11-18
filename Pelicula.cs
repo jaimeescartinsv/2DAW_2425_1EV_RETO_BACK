@@ -8,4 +8,5 @@ public class Pelicula
     public string Clasificacion { get; set; }
     public int Duration { get; set; }
     public string ImageUrl { get; set; }
+    public string CartelUrl { get; set; }
 }
