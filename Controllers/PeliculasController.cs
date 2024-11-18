@@ -43,7 +43,7 @@ public class PeliculasController : ControllerBase
         var pelicula = Peliculas.FirstOrDefault(p => p.PeliculaId == peliculaId);
         if (pelicula == null)
         {
-            return NotFound(new { Message = $"Película con ID {peliculaId} no encontrada." });
+            return NotFound($"Película con ID {peliculaId} no encontrada.");
         }
         return Ok(pelicula);
     }
