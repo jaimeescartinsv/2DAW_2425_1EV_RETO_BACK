@@ -35,4 +35,16 @@ public class PeliculasController : ControllerBase
     {
         return Ok(Peliculas);
     }
+
+    // Obtener una película por ID
+    [HttpGet("{peliculaId}")]
+    public ActionResult<Pelicula> GetPeliculaById(int peliculaId)
+    {
+        var pelicula = Peliculas.FirstOrDefault(p => p.PeliculaId == peliculaId);
+        if (pelicula == null)
+        {
+            return NotFound(new { Message = $"Película con ID {peliculaId} no encontrada." });
+        }
+        return Ok(pelicula);
+    }
 }
