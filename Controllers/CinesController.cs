@@ -8,14 +8,14 @@ public class CinesController : ControllerBase
     [HttpGet]
     public ActionResult<IEnumerable<Cine>> GetCines()
     {
-        return Ok(DataStoreCines.Cines);
+        return Ok(DatosCines.Cines);
     }
 
     // Obtener un cine por ID con sus salas y sesiones
     [HttpGet("cineId/{cineId}")]
     public ActionResult<Cine> GetCineById(int cineId)
     {
-        var cine = DataStoreCines.Cines.FirstOrDefault(c => c.CineId == cineId);
+        var cine = DatosCines.Cines.FirstOrDefault(c => c.CineId == cineId);
         if (cine == null)
         {
             return NotFound($"Cine con ID {cineId} no encontrado.");
@@ -27,7 +27,7 @@ public class CinesController : ControllerBase
     [HttpGet("cineId/{cineId}/salas")]
     public ActionResult<IEnumerable<Sala>> GetSalasPorCineId(int cineId)
     {
-        var cine = DataStoreCines.Cines.FirstOrDefault(c => c.CineId == cineId);
+        var cine = DatosCines.Cines.FirstOrDefault(c => c.CineId == cineId);
         if (cine == null)
         {
             return NotFound($"Cine con ID {cineId} no encontrado.");
@@ -40,7 +40,7 @@ public class CinesController : ControllerBase
     [HttpGet("cineId/{cineId}/salas/{salaId}")]
     public ActionResult<Sala> GetSalaPorId(int cineId, int salaId)
     {
-        var cine = DataStoreCines.Cines.FirstOrDefault(c => c.CineId == cineId);
+        var cine = DatosCines.Cines.FirstOrDefault(c => c.CineId == cineId);
         if (cine == null)
         {
             return NotFound($"Cine con ID {cineId} no encontrado.");
@@ -59,7 +59,7 @@ public class CinesController : ControllerBase
     [HttpGet("cineId/{cineId}/salas/{salaId}/sesiones")]
     public ActionResult<IEnumerable<Sesion>> GetSesionesPorSalaId(int cineId, int salaId)
     {
-        var cine = DataStoreCines.Cines.FirstOrDefault(c => c.CineId == cineId);
+        var cine = DatosCines.Cines.FirstOrDefault(c => c.CineId == cineId);
         if (cine == null)
         {
             return NotFound($"Cine con ID {cineId} no encontrado.");
@@ -78,7 +78,7 @@ public class CinesController : ControllerBase
     [HttpGet("cineId/{cineId}/salas/{salaId}/sesiones/{sesionId}")]
     public ActionResult<Sesion> GetSesionById(int cineId, int salaId, int sesionId)
     {
-        var cine = DataStoreCines.Cines.FirstOrDefault(c => c.CineId == cineId);
+        var cine = DatosCines.Cines.FirstOrDefault(c => c.CineId == cineId);
         if (cine == null)
         {
             return NotFound($"Cine con ID {cineId} no encontrado.");

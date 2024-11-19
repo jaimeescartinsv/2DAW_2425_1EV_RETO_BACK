@@ -6,7 +6,7 @@ public class TicketsController : ControllerBase
 {
     private static List<Ticket> Tickets = new List<Ticket>();
 
-    // Crear un ticket para una función seleccionada
+    // Crear un ticket para una sesión seleccionada
     [HttpPost("crear")]
     public ActionResult<Ticket> CreateTicket([FromBody] Ticket ticket)
     {
@@ -17,51 +17,51 @@ public class TicketsController : ControllerBase
             return BadRequest($"El usuario con ID {ticket.UsuarioId} no existe.");
         }
 
-        // Validar existencia de la función directamente
-        var sesion = DataStoreCines.Cines
+        // Validar existencia de la sesión directamente
+        var sesion = DatosCines.Cines
             .SelectMany(c => c.Salas)
             .SelectMany(s => s.Sesiones)
             .FirstOrDefault(f => f.SesionId == ticket.SesionId);
 
         if (sesion == null)
         {
-            return BadRequest($"La función con ID {ticket.SesionId} no existe.");
+            return BadRequest($"La sesión con ID {ticket.SesionId} no existe.");
         }
 
-        // Validar existencia de la sala asociada a la función
-        var sala = DataStoreCines.Cines?
+        // Validar existencia de la sala asociada a la sesión
+        var sala = DatosCines.Cines?
             .SelectMany(c => c.Salas)
             .FirstOrDefault(s => s.SalaId == sesion.SalaId);
 
         if (sala == null)
         {
-            return BadRequest($"No se encontró la sala asociada a la función con ID {ticket.SesionId}.");
+            return BadRequest($"No se encontró la sala asociada a la sesión con ID {ticket.SesionId}.");
         }
 
-        // Validar que la lista de asientos no sea nula
+        // Validar que la lista de butacas no sea nula
         if (sala.Butacas == null || !sala.Butacas.Any())
         {
-            return BadRequest($"La sala con ID {sala.SalaId} no tiene asientos configurados.");
+            return BadRequest($"La sala con ID {sala.SalaId} no tiene butacas configuradas.");
         }
 
-        // Validar existencia del asiento
+        // Validar existencia de la butaca
         var butaca = sala.Butacas.FirstOrDefault(a => a.ButacaId == ticket.ButacaId);
         if (butaca == null)
         {
-            return BadRequest($"El asiento con ID {ticket.ButacaId} no existe en la sala con ID {sala.SalaId}.");
+            return BadRequest($"La butaca con ID {ticket.ButacaId} no existe en la sala con ID {sala.SalaId}.");
         }
 
-        // Validar que el asiento esté disponible
+        // Validar que la butaca esté disponible
         if (butaca.Estado != "Disponible")
         {
-            return BadRequest($"El asiento con ID {ticket.ButacaId} no está disponible.");
+            return BadRequest($"La butaca con ID {ticket.ButacaId} no está disponible.");
         }
 
         // Crear el ticket
         ticket.FechaDeCompra = DateTime.Now;
         ticket.TicketId = Tickets.Count > 0 ? Tickets.Max(t => t.TicketId) + 1 : 1;
 
-        // Actualizar el estado del asiento
+        // Actualizar el estado de la butaca
         butaca.Estado = "Reservado";
         butaca.TicketId = ticket.TicketId;
 

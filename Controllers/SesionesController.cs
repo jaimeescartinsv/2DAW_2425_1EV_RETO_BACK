@@ -8,7 +8,7 @@ public class SesionesController : ControllerBase
     [HttpGet]
     public ActionResult<IEnumerable<Sesion>> GetSesiones()
     {
-        var sesiones = DataStoreCines.Cines
+        var sesiones = DatosCines.Cines
             .SelectMany(c => c.Salas)
             .SelectMany(s => s.Sesiones)
             .ToList();
@@ -20,7 +20,7 @@ public class SesionesController : ControllerBase
     [HttpGet("{sesionId}")]
     public ActionResult<Sesion> GetSesionById(int sesionId)
     {
-        var sesion = DataStoreCines.Cines
+        var sesion = DatosCines.Cines
             .SelectMany(c => c.Salas)
             .SelectMany(s => s.Sesiones)
             .FirstOrDefault(f => f.SesionId == sesionId);
@@ -37,7 +37,7 @@ public class SesionesController : ControllerBase
     [HttpGet("sala/{salaId}")]
     public ActionResult<IEnumerable<Sesion>> GetSesionesBySalaId(int salaId)
     {
-        var sesiones = DataStoreCines.Cines
+        var sesiones = DatosCines.Cines
             .SelectMany(c => c.Salas)
             .Where(s => s.SalaId == salaId)
             .SelectMany(s => s.Sesiones)
@@ -55,7 +55,7 @@ public class SesionesController : ControllerBase
     [HttpGet("pelicula/{peliculaId}")]
     public ActionResult<IEnumerable<Sesion>> GetSesionesByPeliculaId(int peliculaId)
     {
-        var sesiones = DataStoreCines.Cines
+        var sesiones = DatosCines.Cines
             .SelectMany(c => c.Salas)
             .SelectMany(s => s.Sesiones)
             .Where(f => f.PeliculaId == peliculaId)
@@ -73,7 +73,7 @@ public class SesionesController : ControllerBase
     [HttpGet("fecha/{fecha}")]
     public ActionResult<IEnumerable<Sesion>> GetSesionesByFecha(DateTime fecha)
     {
-        var sesiones = DataStoreCines.Cines
+        var sesiones = DatosCines.Cines
             .SelectMany(c => c.Salas)
             .SelectMany(s => s.Sesiones)
             .Where(f => f.FechaDeSesion.Date == fecha.Date)

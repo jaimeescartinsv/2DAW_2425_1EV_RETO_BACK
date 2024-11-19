@@ -8,7 +8,7 @@ public class SalasController : ControllerBase
     [HttpGet("{salaId}/butacas")]
     public ActionResult<IEnumerable<Butaca>> GetButacasBySalaId(int salaId)
     {
-        var sala = DataStoreCines.Cines
+        var sala = DatosCines.Cines
             .SelectMany(c => c.Salas)
             .FirstOrDefault(s => s.SalaId == salaId);
 
@@ -24,7 +24,7 @@ public class SalasController : ControllerBase
     [HttpPut("{salaId}/butacas/{butacaId}")]
     public ActionResult<Butaca> UpdateButacaEstado(int salaId, int butacaId, [FromBody] string nuevoEstado)
     {
-        var sala = DataStoreCines.Cines
+        var sala = DatosCines.Cines
             .SelectMany(c => c.Salas)
             .FirstOrDefault(s => s.SalaId == salaId);
 
