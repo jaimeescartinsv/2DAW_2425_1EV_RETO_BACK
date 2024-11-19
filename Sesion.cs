@@ -1,8 +1,8 @@
-public class Funcion
+public class Sesion
 {
-    public int FuncionId { get; set; }
+    public int SesionId { get; set; }
     public int SalaId { get; set; }
     public int PeliculaId { get; set; }
-    public DateTime FechaDeFuncion { get; set; }
+    public DateTime FechaDeSesion { get; set; }
     public DateTime HoraDeInicio { get; set; }
 }

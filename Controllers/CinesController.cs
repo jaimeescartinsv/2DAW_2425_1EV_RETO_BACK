@@ -4,14 +4,14 @@ using Microsoft.AspNetCore.Mvc;
 [Route("api/cines")]
 public class CinesController : ControllerBase
 {
-    // Obtener lista de cines con sus salas y funciones
+    // Obtener lista de cines con sus salas y sesiones
     [HttpGet]
     public ActionResult<IEnumerable<Cine>> GetCines()
     {
         return Ok(DataStoreCines.Cines);
     }
 
-    // Obtener un cine por ID con sus salas y funciones
+    // Obtener un cine por ID con sus salas y sesiones
     [HttpGet("{cineId}")]
     public ActionResult<Cine> GetCineById(int cineId)
     {
@@ -36,9 +36,9 @@ public class CinesController : ControllerBase
         return Ok(cine.Salas);
     }
 
-    // Obtener funciones de una sala específica en un cine
-    [HttpGet("{cineId}/salas/{salaId}/funciones")]
-    public ActionResult<IEnumerable<Funcion>> GetFuncionesPorSalaId(int cineId, int salaId)
+    // Obtener sesiones de una sala específica en un cine
+    [HttpGet("{cineId}/salas/{salaId}/sesiones")]
+    public ActionResult<IEnumerable<Sesion>> GetSesionesPorSalaId(int cineId, int salaId)
     {
         var cine = DataStoreCines.Cines.FirstOrDefault(c => c.CineId == cineId);
         if (cine == null)
@@ -52,12 +52,12 @@ public class CinesController : ControllerBase
             return NotFound($"Sala con ID {salaId} no encontrada en el cine con ID {cineId}.");
         }
 
-        return Ok(sala.Funciones);
+        return Ok(sala.Sesiones);
     }
 
-    // Obtener una función específica por cine, sala y función
-    [HttpGet("{cineId}/salas/{salaId}/funciones/{funcionId}")]
-    public ActionResult<Funcion> GetFuncionById(int cineId, int salaId, int funcionId)
+    // Obtener una sesion específica por cine, sala y sesion
+    [HttpGet("{cineId}/salas/{salaId}/sesiones/{sesionId}")]
+    public ActionResult<Sesion> GetSesionById(int cineId, int salaId, int sesionId)
     {
         var cine = DataStoreCines.Cines.FirstOrDefault(c => c.CineId == cineId);
         if (cine == null)
@@ -71,13 +71,13 @@ public class CinesController : ControllerBase
             return NotFound($"Sala con ID {salaId} no encontrada en el cine con ID {cineId}.");
         }
 
-        var funcion = sala.Funciones.FirstOrDefault(f => f.FuncionId == funcionId);
+        var sesion = sala.Sesiones.FirstOrDefault(f => f.SesionId == sesionId);
 
-        if (funcion == null)
+        if (sesion == null)
         {
-            return NotFound($"Función con ID {funcionId} no encontrada en la sala con ID {salaId} del cine con ID {cineId}.");
+            return NotFound($"Sesion con ID {sesionId} no encontrada en la sala con ID {salaId} del cine con ID {cineId}.");
         }
 
-        return Ok(funcion);
+        return Ok(sesion);
     }
 }

@@ -15,22 +15,22 @@ public static class DataStoreCines
                     Nombre = "Sala 1",
                     CineId = 1,
                     Capacidad = 200,
-                    Funciones = new List<Funcion>
+                    Sesiones = new List<Sesion>
                     {
-                        new Funcion
+                        new Sesion
                         {
-                            FuncionId = 1,
+                            SesionId = 1,
                             SalaId = 1,
                             PeliculaId = 1,
-                            FechaDeFuncion = new DateTime(2024, 12, 1),
+                            FechaDeSesion = new DateTime(2024, 12, 1),
                             HoraDeInicio = new DateTime(2024, 12, 1, 18, 0, 0)
                         },
-                        new Funcion
+                        new Sesion
                         {
-                            FuncionId = 2,
+                            SesionId = 2,
                             SalaId = 1,
                             PeliculaId = 2,
-                            FechaDeFuncion = new DateTime(2024, 12, 1),
+                            FechaDeSesion = new DateTime(2024, 12, 1),
                             HoraDeInicio = new DateTime(2024, 12, 1, 20, 30, 0)
                         }
                     },
@@ -47,22 +47,22 @@ public static class DataStoreCines
                     Nombre = "Sala 2",
                     CineId = 1,
                     Capacidad = 200,
-                    Funciones = new List<Funcion>
+                    Sesiones = new List<Sesion>
                     {
-                        new Funcion
+                        new Sesion
                         {
-                            FuncionId = 3,
+                            SesionId = 3,
                             SalaId = 2,
                             PeliculaId = 3,
-                            FechaDeFuncion = new DateTime(2024, 12, 2),
+                            FechaDeSesion = new DateTime(2024, 12, 2),
                             HoraDeInicio = new DateTime(2024, 12, 2, 18, 30, 0)
                         },
-                        new Funcion
+                        new Sesion
                         {
-                            FuncionId = 4,
+                            SesionId = 4,
                             SalaId = 2,
                             PeliculaId = 4,
-                            FechaDeFuncion = new DateTime(2024, 12, 2),
+                            FechaDeSesion = new DateTime(2024, 12, 2),
                             HoraDeInicio = new DateTime(2024, 12, 2, 21, 0, 0)
                         }
                     },

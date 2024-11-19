@@ -18,24 +18,24 @@ public class TicketsController : ControllerBase
         }
 
         // Validar existencia de la función directamente
-        var funcion = DataStoreCines.Cines
+        var sesion = DataStoreCines.Cines
             .SelectMany(c => c.Salas)
-            .SelectMany(s => s.Funciones)
-            .FirstOrDefault(f => f.FuncionId == ticket.FuncionId);
+            .SelectMany(s => s.Sesiones)
+            .FirstOrDefault(f => f.SesionId == ticket.SesionId);
 
-        if (funcion == null)
+        if (sesion == null)
         {
-            return BadRequest($"La función con ID {ticket.FuncionId} no existe.");
+            return BadRequest($"La función con ID {ticket.SesionId} no existe.");
         }
 
         // Validar existencia de la sala asociada a la función
         var sala = DataStoreCines.Cines?
             .SelectMany(c => c.Salas)
-            .FirstOrDefault(s => s.SalaId == funcion.SalaId);
+            .FirstOrDefault(s => s.SalaId == sesion.SalaId);
 
         if (sala == null)
         {
-            return BadRequest($"No se encontró la sala asociada a la función con ID {ticket.FuncionId}.");
+            return BadRequest($"No se encontró la sala asociada a la función con ID {ticket.SesionId}.");
         }
 
         // Validar que la lista de asientos no sea nula
