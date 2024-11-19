@@ -12,7 +12,7 @@ public class CinesController : ControllerBase
     }
 
     // Obtener un cine por ID con sus salas y sesiones
-    [HttpGet("{cineId}")]
+    [HttpGet("cineId/{cineId}")]
     public ActionResult<Cine> GetCineById(int cineId)
     {
         var cine = DataStoreCines.Cines.FirstOrDefault(c => c.CineId == cineId);
@@ -24,7 +24,7 @@ public class CinesController : ControllerBase
     }
 
     // Obtener las salas de un cine por ID
-    [HttpGet("{cineId}/salas")]
+    [HttpGet("cineId/{cineId}/salas")]
     public ActionResult<IEnumerable<Sala>> GetSalasPorCineId(int cineId)
     {
         var cine = DataStoreCines.Cines.FirstOrDefault(c => c.CineId == cineId);
@@ -36,8 +36,27 @@ public class CinesController : ControllerBase
         return Ok(cine.Salas);
     }
 
+    // Obtener la sala por ID
+    [HttpGet("cineId/{cineId}/salas/{salaId}")]
+    public ActionResult<Sala> GetSalaPorId(int cineId, int salaId)
+    {
+        var cine = DataStoreCines.Cines.FirstOrDefault(c => c.CineId == cineId);
+        if (cine == null)
+        {
+            return NotFound($"Cine con ID {cineId} no encontrado.");
+        }
+
+        var sala = cine.Salas.FirstOrDefault(s => s.SalaId == salaId);
+        if (sala == null)
+        {
+            return NotFound($"Sala con ID {salaId} no encontrada en el cine con ID {cineId}.");
+        }
+
+        return Ok(sala);
+    }
+
     // Obtener sesiones de una sala específica en un cine
-    [HttpGet("{cineId}/salas/{salaId}/sesiones")]
+    [HttpGet("cineId/{cineId}/salas/{salaId}/sesiones")]
     public ActionResult<IEnumerable<Sesion>> GetSesionesPorSalaId(int cineId, int salaId)
     {
         var cine = DataStoreCines.Cines.FirstOrDefault(c => c.CineId == cineId);
@@ -56,7 +75,7 @@ public class CinesController : ControllerBase
     }
 
     // Obtener una sesion específica por cine, sala y sesion
-    [HttpGet("{cineId}/salas/{salaId}/sesiones/{sesionId}")]
+    [HttpGet("cineId/{cineId}/salas/{salaId}/sesiones/{sesionId}")]
     public ActionResult<Sesion> GetSesionById(int cineId, int salaId, int sesionId)
     {
         var cine = DataStoreCines.Cines.FirstOrDefault(c => c.CineId == cineId);
