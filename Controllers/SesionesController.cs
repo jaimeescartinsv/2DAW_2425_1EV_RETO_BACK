@@ -51,19 +51,20 @@ public class SesionesController : ControllerBase
         return Ok(sesiones);
     }
 
-    // Obtener sesiones por película
-    [HttpGet("pelicula/{peliculaId}")]
-    public ActionResult<IEnumerable<Sesion>> GetSesionesByPeliculaId(int peliculaId)
+    // Obtener sesiones por cineId y por peliculaId
+    [HttpGet("cine/{cineId}/pelicula/{peliculaId}")]
+    public ActionResult<IEnumerable<Sesion>> GetSesionesByCineYPelicula(int cineId, int peliculaId)
     {
         var sesiones = DatosCines.Cines
+            .Where(c => c.CineId == cineId) // Filtrar por cineId
             .SelectMany(c => c.Salas)
             .SelectMany(s => s.Sesiones)
-            .Where(f => f.PeliculaId == peliculaId)
+            .Where(f => f.PeliculaId == peliculaId) // Filtrar por peliculaId
             .ToList();
 
         if (!sesiones.Any())
         {
-            return NotFound($"No se encontraron sesiones para la película con ID {peliculaId}.");
+            return NotFound($"No se encontraron sesiones para la película con ID {peliculaId} en el cine con ID {cineId}.");
         }
 
         return Ok(sesiones);
