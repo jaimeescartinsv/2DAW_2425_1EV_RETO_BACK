@@ -1,6 +1,6 @@
-public class Asiento
+public class Butaca
 {
-    public int AsientoId { get; set; }
+    public int ButacaId { get; set; }
     public int SalaId { get; set; }
     public string Estado { get; set; } = "Disponible";
     public int? TicketId { get; set; }

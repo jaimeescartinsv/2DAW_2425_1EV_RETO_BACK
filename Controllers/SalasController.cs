@@ -4,9 +4,9 @@ using Microsoft.AspNetCore.Mvc;
 [Route("api/salas")]
 public class SalasController : ControllerBase
 {
-    // Obtener todos los asientos por sala
-    [HttpGet("{salaId}/asientos")]
-    public ActionResult<IEnumerable<Asiento>> GetAsientosBySalaId(int salaId)
+    // Obtener todas las butacas por sala
+    [HttpGet("{salaId}/butacas")]
+    public ActionResult<IEnumerable<Butaca>> GetButacasBySalaId(int salaId)
     {
         var sala = DataStoreCines.Cines
             .SelectMany(c => c.Salas)
@@ -17,12 +17,12 @@ public class SalasController : ControllerBase
             return NotFound($"Sala con ID {salaId} no encontrada.");
         }
 
-        return Ok(sala.Asientos);
+        return Ok(sala.Butacas);
     }
 
-    // Cambiar el estado de un asiento
-    [HttpPut("{salaId}/asientos/{asientoId}")]
-    public ActionResult<Asiento> UpdateAsientoEstado(int salaId, int asientoId, [FromBody] string nuevoEstado)
+    // Cambiar el estado de una butaca
+    [HttpPut("{salaId}/butacas/{butacaId}")]
+    public ActionResult<Butaca> UpdateButacaEstado(int salaId, int butacaId, [FromBody] string nuevoEstado)
     {
         var sala = DataStoreCines.Cines
             .SelectMany(c => c.Salas)
@@ -33,14 +33,14 @@ public class SalasController : ControllerBase
             return NotFound($"Sala con ID {salaId} no encontrada.");
         }
 
-        var asiento = sala.Asientos.FirstOrDefault(a => a.AsientoId == asientoId);
+        var butaca = sala.Butacas.FirstOrDefault(a => a.ButacaId == butacaId);
 
-        if (asiento == null)
+        if (butaca == null)
         {
-            return NotFound($"Asiento con ID {asientoId} no encontrado en la sala con ID {salaId}.");
+            return NotFound($"Butaca con ID {butacaId} no encontrado en la sala con ID {salaId}.");
         }
 
-        asiento.Estado = nuevoEstado;
-        return Ok(asiento);
+        butaca.Estado = nuevoEstado;
+        return Ok(butaca);
     }
 }

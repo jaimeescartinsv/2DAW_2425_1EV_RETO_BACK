@@ -39,22 +39,22 @@ public class TicketsController : ControllerBase
         }
 
         // Validar que la lista de asientos no sea nula
-        if (sala.Asientos == null || !sala.Asientos.Any())
+        if (sala.Butacas == null || !sala.Butacas.Any())
         {
             return BadRequest($"La sala con ID {sala.SalaId} no tiene asientos configurados.");
         }
 
         // Validar existencia del asiento
-        var asiento = sala.Asientos.FirstOrDefault(a => a.AsientoId == ticket.AsientoId);
-        if (asiento == null)
+        var butaca = sala.Butacas.FirstOrDefault(a => a.ButacaId == ticket.ButacaId);
+        if (butaca == null)
         {
-            return BadRequest($"El asiento con ID {ticket.AsientoId} no existe en la sala con ID {sala.SalaId}.");
+            return BadRequest($"El asiento con ID {ticket.ButacaId} no existe en la sala con ID {sala.SalaId}.");
         }
 
         // Validar que el asiento esté disponible
-        if (asiento.Estado != "Disponible")
+        if (butaca.Estado != "Disponible")
         {
-            return BadRequest($"El asiento con ID {ticket.AsientoId} no está disponible.");
+            return BadRequest($"El asiento con ID {ticket.ButacaId} no está disponible.");
         }
 
         // Crear el ticket
@@ -62,8 +62,8 @@ public class TicketsController : ControllerBase
         ticket.TicketId = Tickets.Count > 0 ? Tickets.Max(t => t.TicketId) + 1 : 1;
 
         // Actualizar el estado del asiento
-        asiento.Estado = "Reservado";
-        asiento.TicketId = ticket.TicketId;
+        butaca.Estado = "Reservado";
+        butaca.TicketId = ticket.TicketId;
 
         // Añadir el ticket a la lista en memoria
         Tickets.Add(ticket);

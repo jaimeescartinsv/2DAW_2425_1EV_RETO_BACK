@@ -5,5 +5,5 @@ public class Sala
     public int CineId { get; set; }
     public int Capacidad { get; set; }
     public List<Sesion> Sesiones { get; set; }
-    public List<Asiento> Asientos { get; set; } = new List<Asiento>();
+    public List<Butaca> Butacas { get; set; } = new List<Butaca>();
 }

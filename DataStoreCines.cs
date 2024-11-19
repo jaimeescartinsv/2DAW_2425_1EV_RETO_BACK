@@ -14,7 +14,7 @@ public static class DataStoreCines
                     SalaId = 1,
                     Nombre = "Sala 1",
                     CineId = 1,
-                    Capacidad = 200,
+                    Capacidad = 100,
                     Sesiones = new List<Sesion>
                     {
                         new Sesion
@@ -34,9 +34,9 @@ public static class DataStoreCines
                             HoraDeInicio = new DateTime(2024, 12, 1, 20, 30, 0)
                         }
                     },
-                    Asientos = Enumerable.Range(1, 200).Select(id => new Asiento
+                    Butacas = Enumerable.Range(1, 100).Select(id => new Butaca
                     {
-                        AsientoId = id,
+                        ButacaId = id,
                         SalaId = 1,
                         Estado = "Disponible"
                     }).ToList()
@@ -46,7 +46,7 @@ public static class DataStoreCines
                     SalaId = 2,
                     Nombre = "Sala 2",
                     CineId = 1,
-                    Capacidad = 200,
+                    Capacidad = 100,
                     Sesiones = new List<Sesion>
                     {
                         new Sesion
@@ -66,9 +66,9 @@ public static class DataStoreCines
                             HoraDeInicio = new DateTime(2024, 12, 2, 21, 0, 0)
                         }
                     },
-                    Asientos = Enumerable.Range(1, 200).Select(id => new Asiento
+                    Butacas = Enumerable.Range(1, 100).Select(id => new Butaca
                     {
-                        AsientoId = id,
+                        ButacaId = id,
                         SalaId = 2,
                         Estado = "Disponible"
                     }).ToList()
