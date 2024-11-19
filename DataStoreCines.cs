@@ -14,7 +14,6 @@ public static class DataStoreCines
                     SalaId = 1,
                     Nombre = "Sala 1",
                     CineId = 1,
-                    Capacidad = 100,
                     Sesiones = new List<Sesion>
                     {
                         new Sesion
@@ -46,7 +45,6 @@ public static class DataStoreCines
                     SalaId = 2,
                     Nombre = "Sala 2",
                     CineId = 1,
-                    Capacidad = 100,
                     Sesiones = new List<Sesion>
                     {
                         new Sesion
