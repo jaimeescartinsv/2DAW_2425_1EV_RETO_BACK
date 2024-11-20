@@ -5,4 +5,5 @@ public class Sesion
     public int PeliculaId { get; set; }
     public DateTime FechaDeSesion { get; set; }
     public DateTime HoraDeInicio { get; set; }
+    public List<Butaca> Butacas { get; set; } = new List<Butaca>();
 }

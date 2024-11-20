@@ -33,6 +33,23 @@ public class SesionesController : ControllerBase
         return Ok(sesion);
     }
 
+    // Obtener una butacas de una sesion específica por su ID
+    [HttpGet("{sesionId}/butacas")]
+    public ActionResult<Sesion> GetButacasBySesionId(int sesionId)
+    {
+        var sesion = DatosCines.Cines
+            .SelectMany(c => c.Salas)
+            .SelectMany(s => s.Sesiones)
+            .FirstOrDefault(f => f.SesionId == sesionId);
+
+        if (sesion == null)
+        {
+            return NotFound($"Sesion con ID {sesionId} no encontrada.");
+        }
+
+        return Ok(sesion);
+    }
+
     // Obtener sesiones por sala
     [HttpGet("sala/{salaId}")]
     public ActionResult<IEnumerable<Sesion>> GetSesionesBySalaId(int salaId)

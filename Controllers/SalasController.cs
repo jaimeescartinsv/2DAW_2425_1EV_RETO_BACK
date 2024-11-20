@@ -4,25 +4,25 @@ using Microsoft.AspNetCore.Mvc;
 [Route("api/salas")]
 public class SalasController : ControllerBase
 {
-    // Obtener todas las butacas por sala
-    [HttpGet("{salaId}/butacas")]
-    public ActionResult<IEnumerable<Butaca>> GetButacasBySalaId(int salaId)
+    // Obtener todas las salas
+    [HttpGet]
+    public ActionResult<IEnumerable<Sala>> GetAllSalas()
     {
-        var sala = DatosCines.Cines
+        var salas = DatosCines.Cines
             .SelectMany(c => c.Salas)
-            .FirstOrDefault(s => s.SalaId == salaId);
-
-        if (sala == null)
+            .ToList();
+            
+    if (!salas.Any())
         {
-            return NotFound($"Sala con ID {salaId} no encontrada.");
+            return NotFound("No se encontraron salas.");
         }
 
-        return Ok(sala.Butacas);
+        return Ok(salas);
     }
 
-    // Cambiar el estado de una butaca
-    [HttpPut("{salaId}/butacas/{butacaId}")]
-    public ActionResult<Butaca> UpdateButacaEstado(int salaId, int butacaId, [FromBody] string nuevoEstado)
+    // Obtener una sala específica por ID
+    [HttpGet("{salaId}")]
+    public ActionResult<IEnumerable<Sala>> GetBySalaId(int salaId)
     {
         var sala = DatosCines.Cines
             .SelectMany(c => c.Salas)
@@ -33,14 +33,6 @@ public class SalasController : ControllerBase
             return NotFound($"Sala con ID {salaId} no encontrada.");
         }
 
-        var butaca = sala.Butacas.FirstOrDefault(a => a.ButacaId == butacaId);
-
-        if (butaca == null)
-        {
-            return NotFound($"Butaca con ID {butacaId} no encontrado en la sala con ID {salaId}.");
-        }
-
-        butaca.Estado = nuevoEstado;
-        return Ok(butaca);
+        return Ok(sala);
     }
 }

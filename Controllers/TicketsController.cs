@@ -39,16 +39,16 @@ public class TicketsController : ControllerBase
         }
 
         // Validar que la lista de butacas no sea nula
-        if (sala.Butacas == null || !sala.Butacas.Any())
+        if (sesion.Butacas == null || !sesion.Butacas.Any())
         {
-            return BadRequest($"La sala con ID {sala.SalaId} no tiene butacas configuradas.");
+            return BadRequest($"La sesión con ID {sesion.SesionId} no tiene butacas configuradas.");
         }
 
         // Validar existencia de la butaca
-        var butaca = sala.Butacas.FirstOrDefault(a => a.ButacaId == ticket.ButacaId);
+        var butaca = sesion.Butacas.FirstOrDefault(a => a.ButacaId == ticket.ButacaId);
         if (butaca == null)
         {
-            return BadRequest($"La butaca con ID {ticket.ButacaId} no existe en la sala con ID {sala.SalaId}.");
+            return BadRequest($"La butaca con ID {ticket.ButacaId} no existe en la sesión con ID {sesion.SesionId}.");
         }
 
         // Validar que la butaca esté disponible
