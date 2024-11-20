@@ -10,14 +10,14 @@ public class TicketsController : ControllerBase
     [HttpPost("crear")]
     public ActionResult<Ticket> CreateTicket([FromBody] Ticket ticket)
     {
-        // Validar existencia del usuario
+        // Validar si existe el usuario
         var usuario = UsuariosController.Usuarios.FirstOrDefault(u => u.UsuarioId == ticket.UsuarioId);
         if (usuario == null)
         {
             return BadRequest($"El usuario con ID {ticket.UsuarioId} no existe.");
         }
 
-        // Validar existencia de la sesión directamente
+        // Validar si existe la sesión
         var sesion = DatosCines.Cines
             .SelectMany(c => c.Salas)
             .SelectMany(s => s.Sesiones)
@@ -28,7 +28,7 @@ public class TicketsController : ControllerBase
             return BadRequest($"La sesión con ID {ticket.SesionId} no existe.");
         }
 
-        // Validar existencia de la sala asociada a la sesión
+        // Validar si existe la sala asociada a la sesión
         var sala = DatosCines.Cines?
             .SelectMany(c => c.Salas)
             .FirstOrDefault(s => s.SalaId == sesion.SalaId);
@@ -44,14 +44,14 @@ public class TicketsController : ControllerBase
             return BadRequest($"La sesión con ID {sesion.SesionId} no tiene butacas configuradas.");
         }
 
-        // Validar existencia de la butaca
+        // Validar si existe la butaca
         var butaca = sesion.Butacas.FirstOrDefault(a => a.ButacaId == ticket.ButacaId);
         if (butaca == null)
         {
             return BadRequest($"La butaca con ID {ticket.ButacaId} no existe en la sesión con ID {sesion.SesionId}.");
         }
 
-        // Validar que la butaca esté disponible
+        // Validar si la butaca está disponible
         if (butaca.Estado != "Disponible")
         {
             return BadRequest($"La butaca con ID {ticket.ButacaId} no está disponible.");
@@ -65,7 +65,7 @@ public class TicketsController : ControllerBase
         butaca.Estado = "Reservado";
         butaca.TicketId = ticket.TicketId;
 
-        // Añadir el ticket a la lista en memoria
+        // Añadir el ticket
         Tickets.Add(ticket);
 
         // Asociar el ticket al usuario
@@ -112,14 +112,34 @@ public class TicketsController : ControllerBase
     [HttpDelete("{ticketId}")]
     public IActionResult DeleteTicket(int ticketId)
     {
+        // Buscar el ticket
         var ticket = Tickets.FirstOrDefault(t => t.TicketId == ticketId);
         if (ticket == null)
         {
             return NotFound($"Ticket con ID {ticketId} no encontrado.");
         }
 
+        var sesion = DatosCines.Cines
+            .SelectMany(c => c.Salas)
+            .SelectMany(s => s.Sesiones)
+            .FirstOrDefault(f => f.SesionId == ticket.SesionId);
+
+        if (sesion != null && sesion.Butacas != null)
+        {
+            // Buscar la butaca asociada al ticket
+            var butaca = sesion.Butacas.FirstOrDefault(b => b.ButacaId == ticket.ButacaId);
+            if (butaca != null)
+            {
+                // Actualizar el estado de la butaca a "Disponible"
+                butaca.Estado = "Disponible";
+                butaca.TicketId = null;
+            }
+        }
+
+        // Eliminar el ticket
         Tickets.Remove(ticket);
 
+        // Buscar y actualizar los tickets del usuario
         var usuario = UsuariosController.Usuarios.FirstOrDefault(u => u.UsuarioId == ticket.UsuarioId);
         if (usuario != null)
         {

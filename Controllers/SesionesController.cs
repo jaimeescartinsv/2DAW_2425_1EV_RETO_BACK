@@ -33,7 +33,7 @@ public class SesionesController : ControllerBase
         return Ok(sesion);
     }
 
-    // Obtener una butacas de una sesion específica por su ID
+    // Obtener una butacas de una sesion específica por la sesión ID
     [HttpGet("{sesionId}/butacas")]
     public ActionResult<Sesion> GetButacasBySesionId(int sesionId)
     {
@@ -73,33 +73,15 @@ public class SesionesController : ControllerBase
     public ActionResult<IEnumerable<Sesion>> GetSesionesByCineYPelicula(int cineId, int peliculaId)
     {
         var sesiones = DatosCines.Cines
-            .Where(c => c.CineId == cineId) // Filtrar por cineId
+            .Where(c => c.CineId == cineId)
             .SelectMany(c => c.Salas)
             .SelectMany(s => s.Sesiones)
-            .Where(f => f.PeliculaId == peliculaId) // Filtrar por peliculaId
+            .Where(f => f.PeliculaId == peliculaId)
             .ToList();
 
         if (!sesiones.Any())
         {
             return NotFound($"No se encontraron sesiones para la película con ID {peliculaId} en el cine con ID {cineId}.");
-        }
-
-        return Ok(sesiones);
-    }
-
-    // Obtener sesiones por fecha específica
-    [HttpGet("fecha/{fecha}")]
-    public ActionResult<IEnumerable<Sesion>> GetSesionesByFecha(DateTime fecha)
-    {
-        var sesiones = DatosCines.Cines
-            .SelectMany(c => c.Salas)
-            .SelectMany(s => s.Sesiones)
-            .Where(f => f.FechaDeSesion.Date == fecha.Date)
-            .ToList();
-
-        if (!sesiones.Any())
-        {
-            return NotFound($"No se encontraron sesiones para la fecha {fecha.ToShortDateString()}.");
         }
 
         return Ok(sesiones);
