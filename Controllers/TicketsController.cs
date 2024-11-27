@@ -10,12 +10,12 @@ public class TicketsController : ControllerBase
     [HttpPost("crear")]
     public ActionResult<Ticket> CreateTicket([FromBody] Ticket ticket)
     {
-        // Validar si existe el usuario
+        /* // Validar si existe el usuario
         var usuario = UsuariosController.Usuarios.FirstOrDefault(u => u.UsuarioId == ticket.UsuarioId);
         if (usuario == null)
         {
             return BadRequest($"El usuario con ID {ticket.UsuarioId} no existe.");
-        }
+        } */
 
         // Validar si existe la sesión
         var sesion = DatosCines.Cines
@@ -69,7 +69,7 @@ public class TicketsController : ControllerBase
         Tickets.Add(ticket);
 
         // Asociar el ticket al usuario
-        usuario.Tickets.Add(ticket);
+        //usuario.Tickets.Add(ticket);
 
         return CreatedAtAction(nameof(GetTicketById), new { ticketId = ticket.TicketId }, ticket);
     }
@@ -140,11 +140,11 @@ public class TicketsController : ControllerBase
         Tickets.Remove(ticket);
 
         // Buscar y actualizar los tickets del usuario
-        var usuario = UsuariosController.Usuarios.FirstOrDefault(u => u.UsuarioId == ticket.UsuarioId);
+        /* var usuario = UsuariosController.Usuarios.FirstOrDefault(u => u.UsuarioId == ticket.UsuarioId);
         if (usuario != null)
         {
             usuario.Tickets.Remove(ticket);
-        }
+        } */
 
         return NoContent();
     }
