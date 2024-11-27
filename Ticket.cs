@@ -4,6 +4,7 @@ public class Ticket
     public int SesionId { get; set; }
 
     //public int UsuarioId { get; set; }
+    public string NombreInvitado { get; set; }
 
     public string EmailCompra { get; set; }
     public int ButacaId { get; set; }
