@@ -114,13 +114,6 @@ public class TicketsController : ControllerBase
         // Eliminar el ticket
         Tickets.Remove(ticket);
 
-        // Buscar y actualizar los tickets del usuario
-        /* var usuario = UsuariosController.Usuarios.FirstOrDefault(u => u.UsuarioId == ticket.UsuarioId);
-        if (usuario != null)
-        {
-            usuario.Tickets.Remove(ticket);
-        } */
-
         return NoContent();
     }
 }
