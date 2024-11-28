@@ -56,7 +56,7 @@ public class TicketsController : ControllerBase
     }
 
     // Obtener un ticket específico por su ID
-    [HttpGet("{ticketId}")]
+    [HttpGet("ticketId/{ticketId}")]
     public ActionResult<Ticket> GetTicketById(int ticketId)
     {
         var ticket = Tickets.FirstOrDefault(t => t.TicketId == ticketId);
@@ -69,17 +69,18 @@ public class TicketsController : ControllerBase
         return Ok(ticket);
     }
 
-    // Obtener los tickets de un usuario específico
-    [HttpGet("usuario/{usuarioId}")]
-    public ActionResult<IEnumerable<Ticket>> GetTicketsByUsuarioId(int usuarioId)
+    // Obtener tickets por su email
+    [HttpGet("emailCompra/{emailCompra}")]
+    public ActionResult<IEnumerable<Ticket>> GetTicketsByEmail(string emailCompra)
     {
-        var usuario = UsuariosController.Usuarios.FirstOrDefault(u => u.UsuarioId == usuarioId);
-        if (usuario == null)
+        var tickets = Tickets.Where(t => t.EmailCompra == emailCompra);
+
+        if (tickets == null)
         {
-            return NotFound($"Usuario con ID {usuarioId} no encontrado.");
+            return NotFound($"Tickets con el correo {emailCompra} no encontrados.");
         }
 
-        return Ok(usuario.Tickets);
+        return Ok(tickets);
     }
 
     // Eliminar un ticket por su ID
