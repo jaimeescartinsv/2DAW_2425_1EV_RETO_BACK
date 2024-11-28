@@ -7,71 +7,45 @@ public class TicketsController : ControllerBase
     private static List<Ticket> Tickets = new List<Ticket>();
 
     // Crear un ticket para una sesión seleccionada
-    [HttpPost("crear")]
-    public ActionResult<Ticket> CreateTicket([FromBody] Ticket ticket)
+    [HttpPost("crear-tickets")]
+    public ActionResult<IEnumerable<Ticket>> CreateMultipleTickets([FromBody] List<Ticket> tickets)
     {
-        /* // Validar si existe el usuario
-        var usuario = UsuariosController.Usuarios.FirstOrDefault(u => u.UsuarioId == ticket.UsuarioId);
-        if (usuario == null)
-        {
-            return BadRequest($"El usuario con ID {ticket.UsuarioId} no existe.");
-        } */
+        var createdTickets = new List<Ticket>();
 
-        // Validar si existe la sesión
-        var sesion = DatosCines.Cines
-            .SelectMany(c => c.Salas)
-            .SelectMany(s => s.Sesiones)
-            .FirstOrDefault(f => f.SesionId == ticket.SesionId);
-
-        if (sesion == null)
+        foreach (var ticket in tickets)
         {
-            return BadRequest($"La sesión con ID {ticket.SesionId} no existe.");
+            // Validar si existe la sesión
+            var sesion = DatosCines.Cines
+                .SelectMany(c => c.Salas)
+                .SelectMany(s => s.Sesiones)
+                .FirstOrDefault(f => f.SesionId == ticket.SesionId);
+
+            if (sesion == null)
+            {
+                return BadRequest($"La sesión con ID {ticket.SesionId} no existe.");
+            }
+
+            // Validar si existe la butaca
+            var butaca = sesion.Butacas.FirstOrDefault(a => a.ButacaId == ticket.ButacaId);
+            if (butaca == null || butaca.Estado != "Disponible")
+            {
+                return BadRequest($"La butaca con ID {ticket.ButacaId} no está disponible.");
+            }
+
+            // Crear el ticket
+            ticket.FechaDeCompra = DateTime.Now;
+            ticket.TicketId = Tickets.Count > 0 ? Tickets.Max(t => t.TicketId) + 1 : 1;
+
+            // Actualizar el estado de la butaca
+            butaca.Estado = "Reservado";
+            butaca.TicketId = ticket.TicketId;
+
+            // Añadir el ticket
+            Tickets.Add(ticket);
+            createdTickets.Add(ticket);
         }
 
-        // Validar si existe la sala asociada a la sesión
-        var sala = DatosCines.Cines?
-            .SelectMany(c => c.Salas)
-            .FirstOrDefault(s => s.SalaId == sesion.SalaId);
-
-        if (sala == null)
-        {
-            return BadRequest($"No se encontró la sala asociada a la sesión con ID {ticket.SesionId}.");
-        }
-
-        // Validar que la lista de butacas no sea nula
-        if (sesion.Butacas == null || !sesion.Butacas.Any())
-        {
-            return BadRequest($"La sesión con ID {sesion.SesionId} no tiene butacas configuradas.");
-        }
-
-        // Validar si existe la butaca
-        var butaca = sesion.Butacas.FirstOrDefault(a => a.ButacaId == ticket.ButacaId);
-        if (butaca == null)
-        {
-            return BadRequest($"La butaca con ID {ticket.ButacaId} no existe en la sesión con ID {sesion.SesionId}.");
-        }
-
-        // Validar si la butaca está disponible
-        if (butaca.Estado != "Disponible")
-        {
-            return BadRequest($"La butaca con ID {ticket.ButacaId} no está disponible.");
-        }
-
-        // Crear el ticket
-        ticket.FechaDeCompra = DateTime.Now;
-        ticket.TicketId = Tickets.Count > 0 ? Tickets.Max(t => t.TicketId) + 1 : 1;
-
-        // Actualizar el estado de la butaca
-        butaca.Estado = "Reservado";
-        butaca.TicketId = ticket.TicketId;
-
-        // Añadir el ticket
-        Tickets.Add(ticket);
-
-        // Asociar el ticket al usuario
-        //usuario.Tickets.Add(ticket);
-
-        return CreatedAtAction(nameof(GetTicketById), new { ticketId = ticket.TicketId }, ticket);
+        return CreatedAtAction(nameof(GetTicketById), new { ticketId = createdTickets.First().TicketId }, createdTickets);
     }
 
     // Obtener todos los tickets
