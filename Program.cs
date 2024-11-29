@@ -24,7 +24,7 @@ builder.Services.AddCors(options =>
 var app = builder.Build();
 
 // Configurar el pipeline HTTP
-if (app.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment() || app.Environment.IsProduction())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
