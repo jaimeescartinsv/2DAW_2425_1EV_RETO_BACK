@@ -1,5 +1,12 @@
 var builder = WebApplication.CreateBuilder(args);
 
+// Configurar Kestrel para escuchar en todas las interfaces
+builder.WebHost.ConfigureKestrel(options =>
+{
+    options.ListenAnyIP(5000); // Puerto HTTP
+    options.ListenAnyIP(5001, listenOptions => listenOptions.UseHttps()); // Puerto HTTPS
+});
+
 // Agregar servicios al contenedor
 builder.Services.AddControllers(); // Los controladores se registran automáticamente
 builder.Services.AddScoped<TicketsController>();
@@ -28,6 +35,12 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+}
+else
+{
+    // Configuración adicional para entornos de producción
+    app.UseExceptionHandler("/error"); // Manejo de errores centralizado
+    app.UseHsts(); // Seguridad adicional con Strict-Transport-Security
 }
 
 // Habilitar CORS
