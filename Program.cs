@@ -1,5 +1,11 @@
 var builder = WebApplication.CreateBuilder(args);
 
+// Configurar el puerto
+builder.WebHost.ConfigureKestrel(options =>
+{
+    options.ListenAnyIP(5000);
+});
+
 // Agregar servicios al contenedor
 builder.Services.AddControllers(); // Los controladores se registran automáticamente
 builder.Services.AddScoped<TicketsController>();
