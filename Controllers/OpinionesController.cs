@@ -7,7 +7,7 @@ public class OpinionesController : ControllerBase
     private static List<Opinion> Opiniones = new List<Opinion>
     {
         new Opinion { PeliculaId = 1, Usuario = "Alex", Comentario = "Me ha gustado mucho la película, la recomiendo", Estrellas = 5},
-        new Opinion { PeliculaId = 1, Usuario = "Vanessa", Comentario = "No me ha gustado nada la película, no la recomiendo", Estrellas = 1}
+        new Opinion { PeliculaId = 1, Usuario = "Vanessa", Comentario = "No me ha gustado nada la película, no la recomiendo", Estrellas = 2}
     };
 
     // Obtener todas las opiniones
