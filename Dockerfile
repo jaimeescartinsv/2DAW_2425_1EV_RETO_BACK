@@ -22,7 +22,7 @@ WORKDIR /app
 COPY --from=build /app/out .
 
 # Exponer el puerto en el que la aplicación escuchará
-EXPOSE 5000
+EXPOSE 27421
 
 # Establecer el comando para ejecutar la aplicación
 ENTRYPOINT ["dotnet", "BACK-END.dll"]

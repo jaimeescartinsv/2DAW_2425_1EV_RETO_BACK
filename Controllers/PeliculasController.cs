@@ -31,7 +31,7 @@ public class PeliculasController : ControllerBase
 
     // Obtener todas las películas
     [HttpGet]
-    public ActionResult<List<Pelicula>> GetPeliculas()
+    public ActionResult<IEnumerable<Pelicula>> GetPeliculas()
     {
         return Ok(Peliculas);
     }
